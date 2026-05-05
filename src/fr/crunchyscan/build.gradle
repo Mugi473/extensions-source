@@ -1,0 +1,10 @@
+ext {
+    extName = 'Crunchyscan'
+    extClass = '.Crunchyscan'
+    themePkg = 'madara'
+    baseUrl = 'https://crunchyscan.fr'
+    overrideVersionCode = 0
+    isNsfw = true
+}
+
+apply from: "$rootDir/common.gradle"
