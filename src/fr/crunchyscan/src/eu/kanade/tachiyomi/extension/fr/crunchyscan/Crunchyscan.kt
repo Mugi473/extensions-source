@@ -12,6 +12,7 @@ class Crunchyscan :
         SimpleDateFormat("MMMM d, yyyy", Locale("fr")),
     ) {
     override val useNewChapterEndpoint = true
+    override val mangaSubString = "liste-manga"
     override val mangaDetailsSelectorStatus =
         "div.summary-heading:contains(statut) + div.summary-content"
 }
