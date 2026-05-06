@@ -3,7 +3,7 @@ ext {
     extClass = '.Crunchyscan'
     themePkg = 'madara'
     baseUrl = 'https://crunchyscan.fr'
-    overrideVersionCode = 0
+    overrideVersionCode = 1
     isNsfw = true
 }
 
