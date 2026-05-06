@@ -1,3 +1,6 @@
+Mugi Extensions
+https://raw.githubusercontent.com/Mugi473/extensions-source/repo/index.min.json
+
 # Keiyoushi Extensions
 
 ### Please give the repo a :star:
