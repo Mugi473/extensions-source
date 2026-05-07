@@ -1,0 +1,9 @@
+ext {
+    extName = 'PhenixScans'
+    extClass = '.PhenixScans'
+    baseUrl = 'https://phenix-scans.co'
+    extVersionCode = 100
+    isNsfw = false
+}
+
+apply from: "$rootDir/common.gradle"
