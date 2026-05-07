@@ -18,6 +18,7 @@ import java.util.Locale
 
 class PhenixScans : HttpSource() {
     override val baseUrl = "https://phenix-scans.co"
+    private val cdnBaseUrl = "https://api.phenix-scans.co"
     private val apiBaseUrl = "https://api.phenix-scans.co/api"
     override val lang = "fr"
     override val name = "Phenix Scans"
@@ -100,7 +101,7 @@ class PhenixScans : HttpSource() {
         val mangas = data.mangas.map {
             SManga.create().apply {
                 title = it.title
-                thumbnail_url = it.coverImage?.let { c -> "$apiBaseUrl/$c" }
+                thumbnail_url = it.coverImage?.let { c -> "$cdnBaseUrl/$c" }
                 url = it.slug
             }
         }
@@ -123,7 +124,7 @@ class PhenixScans : HttpSource() {
 
         return SManga.create().apply {
             title = data.manga.title
-            thumbnail_url = data.manga.coverImage?.let { "$apiBaseUrl/$it" }
+            thumbnail_url = data.manga.coverImage?.let { "$cdnBaseUrl/$it" }
             url = data.manga.slug
             description = data.manga.synopsis
             status = when (data.manga.status) {
@@ -179,7 +180,7 @@ class PhenixScans : HttpSource() {
         val data = response.parseAs<ChapterContentDto>()
 
         return data.chapter.images.mapIndexed { index, url ->
-            Page(index, imageUrl = "$apiBaseUrl/$url")
+            Page(index, imageUrl = "$cdnBaseUrl/$url")
         }
     }
 }
