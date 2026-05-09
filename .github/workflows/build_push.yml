@@ -90,6 +90,10 @@ jobs:
           path: main
           persist-credentials: false
       - name: Build repo artifacts
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+          ALIAS: ${{ secrets.ALIAS }}
         run: |
           cd main
           python ./.github/scripts/move-built-apks.py
@@ -98,6 +102,15 @@ jobs:
           java -jar ./Inspector.jar "repo/apk" "output.json" "tmp"
           python ./.github/scripts/create-repo.py
           python -c "import json; d=json.load(open('repo/index.min.json')); json.dump(d, open('repo/index.json','w'), indent=2, ensure_ascii=False)"
+
+          # Generate repo.json for Mihon (requires signing key fingerprint)
+          echo "$SIGNING_KEY" | base64 -d > signingkey.jks
+          FINGERPRINT="$(keytool -list -keystore signingkey.jks -storepass "$KEY_STORE_PASSWORD" -alias "$ALIAS" -rfc | openssl x509 -outform DER | sha256sum | awk '{print $1}')"
+          rm -f signingkey.jks
+          REPO_NAME="${GITHUB_REPOSITORY##*/}"
+          OWNER="${GITHUB_REPOSITORY%%/*}"
+          python -c "import json; json.dump({'meta': {'name': '$OWNER extensions', 'website': 'https://github.com/$GITHUB_REPOSITORY', 'signingKeyFingerprint': '$FINGERPRINT'}}, open('repo/repo.json','w'), indent=2)"
+          cat repo/repo.json
       - name: Force-push to repo branch
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
